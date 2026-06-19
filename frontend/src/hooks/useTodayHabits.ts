@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
-import { checkGoalAutoComplete } from '../lib/goalAutoComplete'
+import { checkGoalAutoComplete, checkGoalReopen } from '../lib/goalAutoComplete'
 import type { Tables } from '../lib/database.types'
 
 export type Habit = Tables<'habits'>
@@ -67,10 +67,13 @@ export function useUpsertLog(date: string) {
     },
     onSuccess: async (_, vars) => {
       qc.invalidateQueries({ queryKey: ['today', date] })
-      if (vars.completed && vars.goal_id) {
-        const autoCompleted = await checkGoalAutoComplete(vars.goal_id, date)
-        if (autoCompleted) {
-          qc.invalidateQueries({ queryKey: ['goals'] })
+      if (vars.goal_id) {
+        if (vars.completed) {
+          const autoCompleted = await checkGoalAutoComplete(vars.goal_id, date)
+          if (autoCompleted) qc.invalidateQueries({ queryKey: ['goals'] })
+        } else {
+          const reopened = await checkGoalReopen(vars.goal_id)
+          if (reopened) qc.invalidateQueries({ queryKey: ['goals'] })
         }
       }
     },

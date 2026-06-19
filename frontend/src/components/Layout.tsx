@@ -8,6 +8,14 @@ function CalendarIcon() {
   )
 }
 
+function BarbellIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" className="size-6">
+      <path d="M4 8v8M20 8v8M7 9.5v5M17 9.5v5M7 12h10" />
+    </svg>
+  )
+}
+
 function CheckCircleIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="size-6">
@@ -26,6 +34,7 @@ function FlagIcon() {
 
 const navItems = [
   { to: '/', label: 'Today', Icon: CalendarIcon },
+  { to: '/workout', label: 'Workout', Icon: BarbellIcon },
   { to: '/habits', label: 'Habits', Icon: CheckCircleIcon },
   { to: '/goals', label: 'Goals', Icon: FlagIcon },
 ]

@@ -4,6 +4,7 @@ import { SignUp } from './pages/SignUp'
 import { Today } from './pages/Today'
 import { Habits } from './pages/Habits'
 import { Goals } from './pages/Goals'
+import { Workout } from './pages/Workout'
 import { ProtectedRoute } from './components/ProtectedRoute'
 
 function Protected({ children }: { children: React.ReactNode }) {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/" element={<Protected><Today /></Protected>} />
         <Route path="/habits" element={<Protected><Habits /></Protected>} />
         <Route path="/goals" element={<Protected><Goals /></Protected>} />
+        <Route path="/workout" element={<Protected><Workout /></Protected>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

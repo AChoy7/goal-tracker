@@ -1,6 +1,22 @@
 import { supabase } from './supabase'
 
 /**
+ * When a habit log or task linked to a goal is unchecked, reopen the goal if
+ * it was auto-completed. Guards with .eq('status','complete') so active/abandoned
+ * goals are never touched. Returns true if a goal was actually reopened.
+ */
+export async function checkGoalReopen(goalId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('goals')
+    .update({ status: 'active', completed_at: null })
+    .eq('id', goalId)
+    .eq('status', 'complete')
+    .select('id')
+  if (error) return false
+  return (data?.length ?? 0) > 0
+}
+
+/**
  * After completing a habit log or task, call this to check whether all habits
  * (today's logs) and tasks linked to the goal are now done. If so, marks the
  * goal complete automatically.
